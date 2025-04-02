@@ -1,9 +1,12 @@
-package service;
+package com.example.employeemanagement.service;
 
-import model.Employee;
+import com.example.employeemanagement.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.EmployeeRepository;
+import com.example.employeemanagement.repository.EmployeeRepository;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
 
 @Service
 public class EmployeeService {
@@ -30,6 +33,13 @@ public class EmployeeService {
         }
     }
 
+    public List<Employee> getEmployees(){
+        return employeeRepository.findAll();
+    }
+
+    public Employee getEmployeeById(Integer empId){
+        return employeeRepository.findById(empId).orElse(null);
+    }
 
     /**
      * Retrieves the salary of an employee.
@@ -46,6 +56,15 @@ public class EmployeeService {
 
     }
 
+
+    public String getNameEmployee(@PathVariable Integer empId){
+        try{
+            Employee employee = employeeRepository.findById(empId).orElse(null);
+            return employee != null ? employee.getName() : null;
+        }catch(Exception e ){
+            throw new RuntimeException("Error getting name: " + e.getMessage());
+        }
+    }
     /**
      * Calculates the salary after a discount.
      * @param empId The employee ID.

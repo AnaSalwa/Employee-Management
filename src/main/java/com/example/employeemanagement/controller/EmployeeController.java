@@ -1,12 +1,11 @@
-package controller;
+package com.example.employeemanagement.controller;
 
-import model.Employee;
+import com.example.employeemanagement.model.Employee;
 import org.springframework.web.bind.annotation.*;
-import service.EmployeeService;
+import com.example.employeemanagement.service.EmployeeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 // EmployeeController.java
 
@@ -16,6 +15,19 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+
+
+    @GetMapping("/employees")
+    public ResponseEntity<Iterable<Employee>> getEmployees() {
+        Iterable<Employee> employees = employeeService.getEmployees();
+        return ResponseEntity.ok(employees);
+    }
+
+    @GetMapping("/{empId}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable Integer empId) {
+        Employee employee = employeeService.getEmployeeById(empId);
+        return ResponseEntity.ok(employee);
+    }
 
     @PostMapping("/addemployee")
     public ResponseEntity<Void> addEmployee(@RequestBody Employee employee) {
@@ -27,6 +39,12 @@ public class EmployeeController {
     public ResponseEntity<Double> getSalary(@PathVariable Integer empId) {
         Double salary = employeeService.getSalary(empId);
         return ResponseEntity.ok(salary);
+    }
+
+    @GetMapping("/{empId}/name")
+    public ResponseEntity<String> getNameEmployee(@PathVariable Integer empId){
+        String name = employeeService.getNameEmployee(empId);
+        return ResponseEntity.ok(name);
     }
 
     @GetMapping("/{empId}/salary-after-discount/{discountPercentage}")
